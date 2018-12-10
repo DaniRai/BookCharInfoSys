@@ -14,11 +14,10 @@ package controllers;
 public class HashedMap<K,V> {
 
 	private Pair<K,V>[] map;
-	private int cap = 29; //initial capacity
+	private int cap = 4; //initial capacity
 
 //----------Inner Pair Class----------//
 	
-	@SuppressWarnings("hiding")
 	private class Pair<K,V> {
 		K key;
 		V value;
@@ -45,7 +44,8 @@ public class HashedMap<K,V> {
 	 * @param key
 	 */
 	private int hash(K key) {
-		return Math.abs(key.hashCode()) % cap;
+		//To Be Implemented
+		return 0;
 	}
 	
 //----------Map Functions----------//
