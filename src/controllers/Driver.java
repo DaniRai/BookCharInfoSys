@@ -8,15 +8,17 @@ package controllers;
  * 
  * @param <T>
  */
+
 public class Driver {
 	private CLI cli;
 	
 	public Driver() {
+		CLI cli = new CLI();
 		cli.console(); //for Debug
 	}
-
+	/*
 	public static void main(String[] args) {
-		new Driver();
+		Driver app = new Driver();
 	}
-
+	*/
 }

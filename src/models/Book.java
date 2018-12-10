@@ -19,10 +19,11 @@ public class Book implements Comparable<Book> {
 	private String cover;
 	private int published;
 	private int pages;
+	private int ISBN;
 
 //----------Constructor---------//
 	
-	public Book(String title, String author, String plot, String genre, String publisher, String cover, int published, int pages) {
+	public Book(String title, String author, String plot, String genre, String publisher, String cover, int published, int pages, int ISBN) {
 		this.title = title;
 		this.author = author;
 		this.plot = plot;
@@ -31,6 +32,7 @@ public class Book implements Comparable<Book> {
 		this.cover = cover;
 		this.published = published;
 		this.pages = pages;
+		this.ISBN=ISBN;
 	}
 	
 //----------Getters----------//	
@@ -90,6 +92,12 @@ public class Book implements Comparable<Book> {
 	public int getPages() {
 		return pages;
 	}
+	/**
+	 * @return ISBN
+	 */
+	public int getISBN() {
+		return ISBN;
+	}
 	
 //---------Setters----------//	
 
@@ -148,7 +156,12 @@ public class Book implements Comparable<Book> {
 	public void setPages(int pages) {
 		this.pages = pages;
 	}
-	
+	/**
+	 * @param ISBN the ISBN to set
+	 */
+	public void setISBN(int isbn) {
+		this.ISBN = isbn;
+	}
 //----------Comparators----------//
 	
 	/*
@@ -159,25 +172,7 @@ public class Book implements Comparable<Book> {
 			return b1.getTitle().compareTo(b2.getTitle());
 		}
 	};
-	
-	public static final Comparator<Book> GenreComparator = new Comparator<Book>() {
-		public int compare(Book b1, Book b2) {
-			return b1.getGenre().compareTo(b2.getGenre());
-		}
-	};
-	
-	public static final Comparator<Book> AuthorComparator = new Comparator<Book>() {
-		public int compare(Book b1, Book b2) {
-			return b1.getAuthor().compareTo(b2.getAuthor());
-		}
-	};
-	
-	public static final Comparator<Book> PublishedComparator = new Comparator<Book>() {
-		public int compare(Book b1, Book b2) {
-			return Integer.compare(b1.getPublished(), b2.getPublished());
-		}
-	};
- 
+
 	
 	public int compareTo(Book o) {
 		return 0;
@@ -185,55 +180,4 @@ public class Book implements Comparable<Book> {
 	
 //----------To String----------//
 	
-	@Override
-	public String toString() {
-		return title + "\n" + "Synopsis: " + plot + "\nAuthor: " + author + "\nGenre: " + genre + "# Pages: " + pages + "\nYear: " + published + "\nPublisher :" + publisher + "\nCover URL" + cover;
-	}
-	
-//----------Overrides----------//
-	
-	/*
-	 * Method to create hashCode from fields used to check equality
-	 */
-	@Override
-	public int hashCode() {
-		//Create hashcodes from each object field
-		int c1 = this.author.hashCode();
-		int c2 = this.cover.hashCode();
-		int c3 = this.genre.hashCode();
-		int c4 = this.plot.hashCode();
-		int c5 = this.publisher.hashCode();
-		int c6 = this.title.hashCode();
-		
-		//Create object hash by addition partials and modulating by prime number
-		int hash = 13 * c1 + c2;
-		hash = 13 * hash + c3;
-		hash = 13 *  hash + c4;
-		hash = 13 * hash + c5;
-		hash = 13 * hash + c6;
-		
-		return hash;		
-	}
-	
-	/**
-	 * Method to override equals
-	 * Checks if Book is equal to given Object
-	 * 
-	 * @param Object
-	 */
-	@Override
-	public boolean equals(Object o) {
-		if(o instanceof Book) 
-			return this.title.equals(((Book) o).title) && 
-		           this.author.equals(((Book) o).author) && 
-		           this.cover.equals(((Book) o).cover) &&
-		           this.genre.equals(((Book) o).genre) &&
-		           this.plot.equals(((Book) o).plot) &&
-		           this.publisher.equals(((Book) o).publisher);
-		           else
-		        	   return false;		           
- 	}
-		
 }
-	
-

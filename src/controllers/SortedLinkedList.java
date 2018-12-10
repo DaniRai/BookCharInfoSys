@@ -127,7 +127,7 @@ public class SortedLinkedList<T extends Comparable<T>> {
 	 * @param data
 	 */
 	public void clear()
-	{		
+	{
 		head = null;
 		tail = null;
 	}
