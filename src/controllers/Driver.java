@@ -16,7 +16,7 @@ public class Driver {
 	}
 
 	public static void main(String[] args) {
-		Driver app = new Driver();
+		new Driver();
 	}
 
 }
