@@ -16,8 +16,7 @@ import java.util.Scanner;
 public class CLI {
 	private Scanner input;
 	private SortedLinkedList<Book> books;
-	private SortedLinkedList<Character> characters;
-	private SortedMap<Book, Character> map;
+	private HashedMap<Book, Character> map;
 	
 //----------Main Menu----------//
 	
@@ -60,7 +59,7 @@ public class CLI {
 			System.out.println("2. Remove Book & Character");
 			System.out.println("3. Update Book Details");
 			System.out.println("4. Update Character Details");
-			System.out.println("5. View Database");
+			System.out.println("5. Reset System");
 			System.out.println("6. Save System Data");
 			System.out.println("7. Return to Main Menu");
 			int option = input.nextInt();
@@ -84,7 +83,7 @@ public class CLI {
 	          			break;
 	          case 5:    resetSystem();
 	          			break;
-	          case 6:    saveSysData();
+	          case 6:    //saveSysData();
 	          			break;
 	          case 7:	 console();
 	          			break;
@@ -104,48 +103,82 @@ public class CLI {
 		
 //----------Admin Menu Functions----------//
 	
+	/**
+	 * Method to add book to database
+	 */
 	public void addBook() {
-		System.out.println();
+		System.out.println("Title of book to add: ");
 		String title = input.nextLine();
-		System.out.println();
+		System.out.println("Author: ");
 		String author = input.nextLine();
-		System.out.println();
+		System.out.println("Please give a synopsis of the title: ");
 		String plot = input.nextLine();
-		System.out.println();
+		System.out.println("Genre of title: ");
 		String genre = input.nextLine();
-		System.out.println();
-		String published = input.nextLine();
-		System.out.println();
+		System.out.println("Publisher: ");
 		String publisher = input.nextLine();
-		System.out.println();
+		System.out.println("Cover URL: ");
+		String cover = input.nextLine();
+		System.out.println("Year published: ");
 		int year = input.nextInt();
-		System.out.println();
+		System.out.println("Number of Pages: ");
 		int pages = input.nextInt();
 		
-		System.out.println();
+		System.out.println("Protagonists name: ");
 		String name = input.nextLine();
-		System.out.println();
+		System.out.println("Age: ");
 		int age = input.nextInt();
-		System.out.println();
+		System.out.println("Gender: ");
 		String gender = input.nextLine();
-		System.out.println();
+		System.out.println("Character description: ");
 		String desc = input.nextLine();
 		
+		Book book = new Book(title, author, plot, genre, publisher, cover, year, pages);
+		Character character = new Character(name, age, gender.charAt(0), desc);
 		
+		books.push(book);
+				
+		map.push(book, character);	
 		
-		map.add(books.push(new Book(title, author, plot, genre, published, publisher, year, pages)), characters.push(new Character(name, age, gender.charAt(0), desc)));
-		
+		books.delDupe();
 	}
 	
+	/**
+	 * Method to remove book from database
+	 */
 	public void removeBook() {
+		System.out.println("Title of book to remove: ");
+		String title = input.nextLine();
 		
+		Book toDelete = books.find(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator).getData();
+		
+		map.erase(toDelete);
+		
+		books.remove(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator);		
 	}
 	
+	/**
+	 * Method to update book within database
+	 */
 	public void updateBook() {
+		System.out.println("Title of book to update: ");;
+		String title = input.nextLine();
 		
+		Book book = books.find(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator).getData();
+		book.toString();
+				
 	}
 	
+	/**
+	 * Method to update character within database
+	 */
 	public void updateCharacter() {
+		System.out.println("Title of book which contains character: ");;
+		String title = input.nextLine();
+		
+		Book book = books.find(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator).getData();
+		map.get(book).toString();
+		
 		
 	}
 	
@@ -154,17 +187,19 @@ public class CLI {
 	 */
 	public void resetSystem() {
 		books.clear();
-		characters.clear();		
-	}
+			}
 	
-	public void saveSysData() {
+	/**
+	 * Method to save System Data to a File
+	 */
+	//public void saveSysData() {
 		
-	}
+	//}
 //----------End User Menu----------//	
 	
 	private int endUserMenu() {
 		System.out.println("1. List all Titles");
-		System.out.println("2. Search by Title");
+		System.out.println("2. View Title");
 		System.out.println("3. Search by Author");
 		System.out.println("4. Search by Year Published");
 		System.out.println("5. Search by Publisher");
@@ -182,13 +217,13 @@ public class CLI {
 			{
 			case 1:    books.printDescend();
 					break;
-			case 2:    searchTitle();
+			case 2:    viewTitle();
           			break;
 			case 3:    searchAuthor();
           			break;
-			case 4:    searchPublished();
+			case 4:    searchGenre();
           			break;
-			case 5:    searchPublisher();
+			case 5:    searchPublished();
           			break;
 			case 6:	 console();
           			break;
@@ -208,20 +243,53 @@ public class CLI {
 	
 //----------End User Functions----------//
 	
-	public void searchTitle() {
+	/**
+	 * Method to Search for book by Title and print book details
+	 */
+	public void viewTitle() {
+		System.out.println("Title of book to view: ");
+		String title = input.nextLine();
 		
+		Book book = books.find(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator).getData();
+		
+		book.toString();
+		map.get(book).toString();
 	}
 	
+	/**
+	 * Method to list all works by specified author
+	 */
 	public void searchAuthor() {
+		System.out.println("Authors name: ");
+		String author = input.nextLine();
 		
+		books.listBy(new Book("a", author, "a", "a", "a", "a", 1, 1), Book.AuthorComparator);
+		
+		viewTitle();
 	}
 	
+	/**
+	 * Method to list all works within a specific genre
+	 */
+	public void searchGenre() {
+		System.out.println("Genre: ");
+		String genre = input.nextLine();
+		
+		books.listBy(new Book("a", "a", "a", genre, "a", "a", 1, 1), Book.GenreComparator);	
+		
+		viewTitle();
+	}
+	
+	/**
+	 * Method to list all works published in a certain year
+	 */
 	public void searchPublished() {
+		System.out.println("Year: ");
+		int published = input.nextInt();
 		
-	}
-	
-	public void searchPublisher() {
+		books.listBy(new Book("a", "a", "a", "a", "a", "a", published, 1), Book.PublishedComparator);
 		
+		viewTitle();
 	}
 		
 }
