@@ -12,8 +12,8 @@ import java.util.Comparator;
 public class SortedLinkedList<T extends Comparable<T>> {
 	
 	//SortedLinkedList elements
-	Node head; //Start of list
-	Node tail; //End of list
+	public Node head; //Start of list
+	public Node tail; //End of list
 	int length; //Length of list
 	
 	/**
@@ -27,7 +27,7 @@ public class SortedLinkedList<T extends Comparable<T>> {
 	/**
 	 * Inner Node Class
 	 */
-	class Node
+	public class Node
 	{
 		//Node elements
 		private T data; //data of type T to be added to node
