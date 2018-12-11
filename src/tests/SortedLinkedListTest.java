@@ -9,6 +9,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import models.*;
+import controllers.*;
+
 /**
  * @author Daniel Quinlan
  * @studentNumber 01133940
@@ -17,12 +20,18 @@ import org.junit.jupiter.api.Test;
  * @param <T>
  */
 class SortedLinkedListTest {
+	private SortedLinkedList<Book> book;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
+		book = new SortedLinkedList<Book>();
+		
+		book.push(new Book(null, null, null, null, null, null, 0, 0));
+		book.push(new Book(null, null, null, null, null, null, 0, 0));
+		book.push(new Book(null, null, null, null, null, null, 0, 0));
 	}
 
 	/**
@@ -30,6 +39,7 @@ class SortedLinkedListTest {
 	 */
 	@AfterEach
 	void tearDown() throws Exception {
+		book = null;
 	}
 
 	/**
@@ -37,7 +47,9 @@ class SortedLinkedListTest {
 	 */
 	@Test
 	void testPush() {
-		fail("Not yet implemented"); // TODO
+		int size = book.size();
+		book.push(new Book(null, null, null, null, null, null, size, size));
+		assertEquals(book.size(), size+1);
 	}
 
 	/**
@@ -45,7 +57,9 @@ class SortedLinkedListTest {
 	 */
 	@Test
 	void testRemove() {
-		fail("Not yet implemented"); // TODO
+		int size = book.size();
+		book.remove(new Book(null, null, null, null, null, null, size, size), Book.TitleComparator);
+		assertEquals(book.size(), size-1);
 	}
 
 	/**
@@ -53,7 +67,9 @@ class SortedLinkedListTest {
 	 */
 	@Test
 	void testClear() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(book.size()>0);
+		book.clear();
+		assertEquals(book.size(), 0);
 	}
 
 	/**
@@ -61,7 +77,9 @@ class SortedLinkedListTest {
 	 */
 	@Test
 	void testFind() {
-		fail("Not yet implemented"); // TODO
+		String tdata = "";
+		String fdata = book.find(new Book(tdata, "a", "a", "a", "a", "a", 0, 0), Book.TitleComparator).getData().getTitle();
+		assertEquals(tdata, fdata);
 	}
 
 	/**
@@ -69,7 +87,7 @@ class SortedLinkedListTest {
 	 */
 	@Test
 	void testSize() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(book.size(),3);
 	}
 
 	/**
@@ -77,7 +95,9 @@ class SortedLinkedListTest {
 	 */
 	@Test
 	void testGetListHead() {
-		fail("Not yet implemented"); // TODO
+		String tdata = "";
+		String fdata = book.getListHead().getTitle();
+		assertEquals(tdata, fdata);
 	}
 
 	/**
@@ -85,55 +105,40 @@ class SortedLinkedListTest {
 	 */
 	@Test
 	void testGetListTail() {
-		fail("Not yet implemented"); // TODO
+		String tdata = "";
+		String fdata = book.getListTail().getTitle();
+		assertEquals(tdata, fdata);
 	}
-
-	/**
-	 * Test method for print list ascending
-	 */
-	@Test
-	void testPrintAscend() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for print list descending
-	 */
-	@Test
-	void testPrintDescend() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for get middle of list
-	 */
-	@Test
-	void testGetMiddle() {
-		fail("Not yet implemented"); // TODO
-	}
-
+	
 	/**
 	 * Test method for sorting of list
 	 */
 	@Test
 	void testSort() {
-		fail("Not yet implemented"); // TODO
+		String tTitle = "";
+		String tAuthor = "";
+		String tGenre = "";
+		int tYear = 0;
+		book.sort(book.head, Book.TitleComparator);
+		assertEquals(tTitle, book.getListHead().getTitle());
+		book.sort(book.head, Book.AuthorComparator);
+		assertEquals(tAuthor, book.getListHead().getAuthor());
+		book.sort(book.head, Book.GenreComparator);
+		assertEquals(tGenre, book.getListHead().getGenre());
+		book.sort(book.head, Book.PublishedComparator);
+		assertEquals(tYear, book.getListHead().getPublished());
 	}
-
-	/**
-	 * Test method for list by x
-	 */
-	@Test
-	void testListBy() {
-		fail("Not yet implemented"); // TODO
-	}
-
+	
 	/**
 	 * Test method for remove duplicates
 	 */
 	@Test
 	void testDelDupe() {
-		fail("Not yet implemented"); // TODO
+		book.push(new Book(null, null, null, null, null, null, 0, 0));
+		assertTrue(book.size()==4);
+		book.sort(book.head, Book.TitleComparator);
+		book.delDupe();
+		assertTrue(book.size()==3);
 	}
 
 }
