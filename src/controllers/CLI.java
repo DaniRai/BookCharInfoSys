@@ -4,7 +4,6 @@ package controllers;
 import models.*;
 import models.Character;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -15,57 +14,34 @@ import java.util.Scanner;
  * @param <T>
  */
 public class CLI {
-	private Scanner input;
+	private Scanner input = new Scanner(System.in);
 	private SortedLinkedList<Book> books;
-	private SortedLinkedList<Character> characters;
 	private HashedMap<Book, Character> map;
 	
-	//----------Constructor---------//
-	public CLI() {
-		input = new Scanner(System.in);
-		books = new SortedLinkedList<Book>();
-		characters = new SortedLinkedList<Character>();
-		map = new HashedMap<Book,Character>();
-	}
 //----------Main Menu----------//
-	private int adminMenu() {
-		System.out.println("1. Add new Book");
-		System.out.println("2. Add new Character");
-		System.out.println("3. Remove Book");
-		System.out.println("4. Remove Character");
-		System.out.println("5. Update Book Details");
-		System.out.println("6. Update Character Details");
-		System.out.println("7. View Database");
-		System.out.println("8. Save System Data");
-		System.out.println("9. Return to Main Menu");
-		int option = getUserInt();
-		return option;
-}
 	
-public void adminConsole(){
-	int option = adminMenu();
-	while (option != 0)
-    {
-       
-    	switch (option)
+	private int mainMenu(){
+			System.out.println("1. Admin Menu");
+			System.out.println("2. End User Menu");
+			int option = input.nextInt();
+        return option;
+	}
+
+	public void console(){
+		int option = mainMenu();
+        while (option != 0)
         {
-          case 1:    addBook();
-          			 break;
-          case 2:    addCharacter();
-          			 break;
-          case 3:    removeBook();
-          			 break;
-          case 4:    removeCharacter();
-          			 break;
-          case 5:    updateBook();
-          			 break;
-          case 6:    updateCharacter();
-          			 break;
-          case 7:	 console();
-          			 break;
-          default:   System.out.println("Invalid option entered: " + option);
-                     break;
-        }
+           
+        	switch (option)
+            {
+               	case 1:    	adminConsole();
+            	          	break;
+               	case 2:		endUserConsole();
+               				break;
+               	default:   	System.out.println("Invalid option entered: " + option);
+              				break;
+            }
+            
             //pauses the program so that the user can read what was printed to the terminal window
             System.out.println("\nPress any key to continue...");
             input.nextLine();
@@ -75,107 +51,345 @@ public void adminConsole(){
             option = mainMenu();
         }
 	}
-//----------Main Menu----------//
-
-	private int mainMenu(){
-			System.out.println("1. Admin Menu");
-			System.out.println("2. End User Menu");
-			int option = getUserInt();
-      return option;
+	
+//----------Admin Menu----------//
+	
+	private int adminMenu() {
+			System.out.println("1. Add new Book & Character");
+			System.out.println("2. Remove Book & Character");
+			System.out.println("3. Update Book Details");
+			System.out.println("4. Update Character Details");
+			System.out.println("5. Reset System");
+			System.out.println("6. Save System Data");
+			System.out.println("7. Return to Main Menu");
+			int option = input.nextInt();
+			return option;
 	}
-public void console(){
-	int option = mainMenu();
-    while (option != 0)
-    {
-       
-    	switch (option)
+		
+	public void adminConsole(){
+		int option = adminMenu();
+        while (option != 0)
         {
-           	case 1:    	adminConsole();
-        	          	break;
-           	case 2:		option =endUserMenu();
-           				break;
-           	default:   	System.out.println("Invalid option entered: " + option);
-          				break;
+           
+        	switch (option)
+            {
+	          case 1:    addBook();
+	          			break;
+	          case 2:    removeBook();
+	          			break;
+	          case 3:    updateBookConsole();
+	          			break;
+	          case 4:    updateCharacterConsole();
+	          			break;
+	          case 5:    resetSystem();
+	          			break;
+	          case 6:    //saveSysData();
+	          			break;
+	          case 7:	 console();
+	          			break;
+              default:    System.out.println("Invalid option entered: " + option);
+                          break;
+            }
+	            
+            //pauses the program so that the user can read what was printed to the terminal window
+            System.out.println("\nPress any key to continue...");
+            input.nextLine();
+            input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
+	            
+            //returns to the main menu
+            option = adminMenu();
         }
-        
-        //pauses the program so that the user can read what was printed to the terminal window
-        System.out.println("\nPress any key to continue...");
-        input.nextLine(); 
-        
-        //returns to the main menu
-        option = mainMenu();
-    }
-}	
+	}
+		
 //----------Admin Menu Functions----------//
 	
+	/**
+	 * Method to add book to database
+	 */
 	public void addBook() {
-		System.out.println("Enter book title: ");
-		String title = getUserString();
-		System.out.println("Enter author: ");
-		String author = getUserString();
-		System.out.println("Enter plot: ");
-		String plot = getUserString();
-		System.out.println("Enter genre: ");
-		String genre = getUserString();
-		System.out.println("Enter ");
-		String published = getUserString();
-		System.out.println("Enter publisher: ");
-		String publisher = getUserString();
-		System.out.println("Enter year: ");
-		int year = getUserInt();
-		System.out.println("Enter number of pages:  ");
-		int pages = getUserInt();
+		System.out.println("Title of book to add: ");
+		String title = input.nextLine();
+		System.out.println("Author: ");
+		String author = input.nextLine();
+		System.out.println("Please give a synopsis of the title: ");
+		String plot = input.nextLine();
+		System.out.println("Genre of title: ");
+		String genre = input.nextLine();
+		System.out.println("Publisher: ");
+		String publisher = input.nextLine();
+		System.out.println("Cover URL: ");
+		String cover = input.nextLine();
+		System.out.println("Year published: ");
+		int year = input.nextInt();
+		System.out.println("Number of Pages: ");
+		int pages = input.nextInt();
 		
-		//books.push(new Book(title, author, plot, genre, published, publisher, year, pages));
-		System.out.println("Book added");
-	}
-	public void addCharacter() {
-		System.out.println();
-		String name = getUserString();
-		System.out.println();
-		int age = getUserInt();
-		System.out.println();
-		String gender = getUserString();
-		System.out.println();
-		String desc = getUserString();
+		System.out.println("Protagonists name: ");
+		String name = input.nextLine();
+		System.out.println("Age: ");
+		int age = input.nextInt();
+		System.out.println("Gender: ");
+		String gender = input.nextLine();
+		System.out.println("Character description: ");
+		String desc = input.nextLine();
 		
-		characters.push(new Character(name, age, gender.charAt(0), desc));
-		System.out.println("Character added");	
+		Book book = new Book(title, author, plot, genre, publisher, cover, year, pages);
+		Character character = new Character(name, age, gender.charAt(0), desc);
+		
+		books.push(book);
+				
+		map.push(book, character);	
+		
+		books.delDupe();
 	}
 	
+	/**
+	 * Method to remove book from database
+	 */
 	public void removeBook() {
+		System.out.println("Title of book to remove: ");
+		String title = input.nextLine();
 		
-	}
-	
-	public void removeCharacter() {
+		Book toDelete = books.find(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator).getData();
 		
-	}
-	
-	public void updateBook() {
+		map.erase(toDelete);
 		
+		books.remove(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator);		
 	}
-	
-	public void updateCharacter() {
-		
-	}
-	
 	
 	/**
 	 * Clears all Lists to reset System
 	 */
 	public void resetSystem() {
 		books.clear();
-		characters.clear();		
 	}
 	
-	public void saveSysData() {
+	/**
+	 * Method to save System Data to a File
+	 */
+	//public void saveSysData() {
 		
+	//}
+	
+//----------Update Book Menu----------//
+	
+	private int updateBookMenu() {
+		System.out.println("1. Update Title");
+		System.out.println("2. Update Author");
+		System.out.println("3. Update Genre");
+		System.out.println("4. Update Publisher");
+		System.out.println("5. Update Publishded Year");
+		System.out.println("6. Update Page Count");
+		System.out.println("7. Update Plot");
+		System.out.println("8. Update Cover Url");
+		System.out.println("9. Return to Admin Menu");
+		int option = input.nextInt();
+		return option;
 	}
+	
+	public void updateBookConsole(){
+		int option = updateBookMenu();
+		while (option != 0)
+		{
+       
+			switch (option)
+			{
+			case 1:    updateBook(1);
+					break;
+			case 2:    updateBook(2);
+          			break;
+			case 3:    updateBook(3);
+          			break;
+			case 4:    updateBook(4);
+          			break;
+			case 5:    updateBook(5);
+          			break;
+			case 6:    updateBook(6);
+  					break;
+			case 7:    updateBook(7);
+  					break;
+			case 8:    updateBook(8);
+  					break;
+			case 9:	 adminConsole();
+          			break;
+			default:    System.out.println("Invalid option entered: " + option);
+                      break;
+			}
+            
+			//pauses the program so that the user can read what was printed to the terminal window
+			System.out.println("\nPress any key to continue...");
+			input.nextLine();
+			input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
+            
+			//returns to the main menu
+			option = updateBookMenu();
+		}
+	}
+	
+//----------Update Book Functions----------//
+	
+	/**
+	 * Method to update book within database
+	 */
+	public void updateBook(int option) {
+		System.out.println("Title of book to update: ");;
+		String title = input.nextLine();
+		
+		Book book = books.find(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator).getData();
+		book.toString();
+		
+		if(option == 1) {
+			System.out.println("New Title for Book: ");
+			String newTitle = input.nextLine();
+			Character character = map.get(book);
+			map.erase(book);
+			book.setTitle(newTitle);
+			map.push(book, character);			
+		}
+		else if (option == 2) {
+			System.out.println("New Author for Book: ");
+			String newAuthor = input.nextLine();
+			Character character = map.get(book);
+			map.erase(book);
+			book.setAuthor(newAuthor);
+			map.push(book, character);			
+		}
+		else if(option ==3) {
+			System.out.println("Updated Genre for Book: ");
+			String newGenre = input.nextLine();
+			Character character = map.get(book);
+			map.erase(book);
+			book.setGenre(newGenre);
+			map.push(book, character);			
+		}
+		else if(option == 4) {
+			System.out.println("New Publisher for Book: ");
+			String newPublisher = input.nextLine();
+			Character character = map.get(book);
+			map.erase(book);
+			book.setPublisher(newPublisher);
+			map.push(book, character);			
+		}
+		else if(option == 5) {
+			System.out.println("Updated Year of Publishing for Book: ");
+			int newYear = input.nextInt();
+			Character character = map.get(book);
+			map.erase(book);
+			book.setPublished(newYear);
+			map.push(book, character);			
+		}
+		else if(option == 6) {
+			System.out.println("Updated Page Count for Book: ");
+			int newPages = input.nextInt();
+			Character character = map.get(book);
+			map.erase(book);
+			book.setPages(newPages);
+			map.push(book, character);			
+		}
+		else if(option == 7) {
+			System.out.println("Updated Plot for Book: ");
+			String newPlot = input.nextLine();
+			Character character = map.get(book);
+			map.erase(book);
+			book.setPlot(newPlot);
+			map.push(book, character);			
+		}
+		else if(option == 8) {
+			System.out.println("New Cover Url for Book: ");
+			String newUrl = input.nextLine();
+			Character character = map.get(book);
+			map.erase(book);
+			book.setCover(newUrl);
+			map.push(book, character);			
+		}				
+	}
+
+//----------Update Character Menu----------//
+	
+	private int updateCharacterMenu() {
+		System.out.println("1. Update Name");
+		System.out.println("2. Update Age");
+		System.out.println("3. Update Gender");
+		System.out.println("4. Update Description");
+		System.out.println("5. Return to Admin Menu");
+		int option = input.nextInt();
+		return option;
+	}
+	
+	public void updateCharacterConsole(){
+		int option = updateCharacterMenu();
+		while (option != 0)
+		{
+       
+			switch (option)
+			{
+			case 1:    updateCharacter(1);
+					break;
+			case 2:    updateCharacter(2);
+          			break;
+			case 3:    updateCharacter(3);
+          			break;
+			case 4:    updateCharacter(4);
+          			break;
+			case 5:	   adminConsole();
+          			break;
+			default:    System.out.println("Invalid option entered: " + option);
+                      break;
+			}
+            
+			//pauses the program so that the user can read what was printed to the terminal window
+			System.out.println("\nPress any key to continue...");
+			input.nextLine();
+			input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
+            
+			//returns to the main menu
+			option = updateCharacterMenu();
+		}
+	}
+	
+//----------Update Character Functions----------//
+	
+	/**
+	 * Method to update Character within database
+	 */
+	public void updateCharacter(int option) {
+		System.out.println("Title of book containing to update: ");;
+		String title = input.nextLine();
+		
+		Book book = books.find(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator).getData();
+		Character character = map.get(book);
+		
+		if(option == 1) {
+			System.out.println("New Name for Character: ");
+			String newTitle = input.nextLine();
+			character.setName(newTitle);
+			map.push(book, character);			
+		}
+		else if (option == 2) {
+			System.out.println("Updated Age for Character: ");
+			int newAge = input.nextInt();
+			character.setAge(newAge);
+			map.push(book, character);			
+		}
+		else if(option ==3) {
+			System.out.println("Updated Gender for Character: ");
+			String newGender = input.nextLine();
+			character.setGender(newGender.charAt(0));
+			map.push(book, character);			
+		}
+		else if(option == 4) {
+			System.out.println("Updated Description for Character: ");
+			String newDesc = input.nextLine();
+			character.setDesc(newDesc);
+			map.push(book, character);			
+		}
+	}
+	
 //----------End User Menu----------//	
 	
 	private int endUserMenu() {
 		System.out.println("1. List all Titles");
-		System.out.println("2. Search by Title");
+		System.out.println("2. View Title");
 		System.out.println("3. Search by Author");
 		System.out.println("4. Search by Year Published");
 		System.out.println("5. Search by Publisher");
@@ -193,13 +407,13 @@ public void console(){
 			{
 			case 1:    books.printDescend();
 					break;
-			case 2:    searchTitle();
+			case 2:    viewTitle();
           			break;
 			case 3:    searchAuthor();
           			break;
-			case 4:    searchPublished();
+			case 4:    searchGenre();
           			break;
-			case 5:    searchPublisher();
+			case 5:    searchPublished();
           			break;
 			case 6:	 console();
           			break;
@@ -219,58 +433,53 @@ public void console(){
 	
 //----------End User Functions----------//
 	
-	public void searchTitle() {
+	/**
+	 * Method to Search for book by Title and print book details
+	 */
+	public void viewTitle() {
+		System.out.println("Title of book to view: ");
+		String title = input.nextLine();
 		
+		Book book = books.find(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator).getData();
+		
+		book.toString();
+		map.get(book).toString();
 	}
 	
+	/**
+	 * Method to list all works by specified author
+	 */
 	public void searchAuthor() {
+		System.out.println("Authors name: ");
+		String author = input.nextLine();
 		
+		books.listBy(new Book("a", author, "a", "a", "a", "a", 1, 1), Book.AuthorComparator);
+		
+		viewTitle();
 	}
 	
+	/**
+	 * Method to list all works within a specific genre
+	 */
+	public void searchGenre() {
+		System.out.println("Genre: ");
+		String genre = input.nextLine();
+		
+		books.listBy(new Book("a", "a", "a", genre, "a", "a", 1, 1), Book.GenreComparator);	
+		
+		viewTitle();
+	}
+	
+	/**
+	 * Method to list all works published in a certain year
+	 */
 	public void searchPublished() {
+		System.out.println("Year: ");
+		int published = input.nextInt();
 		
+		books.listBy(new Book("a", "a", "a", "a", "a", "a", published, 1), Book.PublishedComparator);
+		
+		viewTitle();
 	}
-	
-	public void searchPublisher() {
 		
-	}
-	//----------Other Functions----------//
-	
-		// Loop until input is valid (integer)
-		public int getUserInt() {
-			int integer=0;
-			boolean isNumeric=false;
-			int trials=0;
-			while(!isNumeric){
-				try {
-					if(trials>0) System.out.println("Enter an integer: ");
-					trials++;
-					integer=input.nextInt();
-					input.nextLine();
-					isNumeric=true;
-				}catch(InputMismatchException e) {
-					input.nextLine();
-				}
-			}
-			return integer;
-		}
-		
-		// Loop until input is valid (string)
-		public String getUserString() {
-			int trials=0;
-			String string="";
-			while(!string.matches("[a-zA-Z]+")){
-				try {
-					if(trials>0) System.out.println("Enter a word: ");
-					trials++;
-					string=input.next();
-					input.nextLine();
-				}catch(InputMismatchException e) {
-					input.nextLine();
-				}
-			}
-			return string;
-		}
-		
-	
 }
