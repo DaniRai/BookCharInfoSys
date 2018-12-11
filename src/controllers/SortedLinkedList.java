@@ -1,6 +1,5 @@
 package controllers;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
@@ -13,8 +12,8 @@ import java.util.Comparator;
 public class SortedLinkedList<T extends Comparable<T>> {
 	
 	//SortedLinkedList elements
-	Node head; //Start of list
-	Node tail; //End of list
+	public Node head; //Start of list
+	public Node tail; //End of list
 	int length; //Length of list
 	
 	/**
@@ -28,7 +27,7 @@ public class SortedLinkedList<T extends Comparable<T>> {
 	/**
 	 * Inner Node Class
 	 */
-	class Node
+	public class Node
 	{
 		//Node elements
 		private T data; //data of type T to be added to node
@@ -128,7 +127,7 @@ public class SortedLinkedList<T extends Comparable<T>> {
 	 * @param data
 	 */
 	public void clear()
-	{
+	{		
 		head = null;
 		tail = null;
 	}
@@ -180,9 +179,9 @@ public class SortedLinkedList<T extends Comparable<T>> {
 	 * 
 	 * @return first node in list
 	 */
-	public Node getListHead()
+	public T getListHead()
 	{
-		return head;
+		return head.getData();
 	}
 	
 	/**
@@ -190,9 +189,9 @@ public class SortedLinkedList<T extends Comparable<T>> {
 	 * 
 	 * @return last node in list
 	 */
-	public Node getListTail()
+	public T getListTail()
 	{
-		return tail;
+		return tail.getData();
 	}
 	
 	/**
@@ -369,14 +368,5 @@ public class SortedLinkedList<T extends Comparable<T>> {
 				current = current.next;
 			}
 		}
-	}
-	public ArrayList<T> getAll() {
-		ArrayList<T> array = new ArrayList<T>();
-		SortedLinkedList<T>.Node temp =(SortedLinkedList<T>.Node) this.getListHead();
-		for(int i=0;i<this.size();i++) {
-			array.add(temp.getData());
-			temp=temp.getNext();
-		}
-		return array;
 	}
 }

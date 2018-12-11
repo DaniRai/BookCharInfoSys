@@ -99,5 +99,11 @@ public class Character implements Comparable<Character> {
 	}
 		
 //----------To String----------//
+	
+	@Override
+	public String toString() {
+		return "Name: " + name + "\nAge: " + age + "\nGender" + gender + "\nDescription: " + desc;				
+	}
+	
 		
 }
