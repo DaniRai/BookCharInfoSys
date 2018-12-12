@@ -1,6 +1,8 @@
 //----------Imports & Packages----------//
 package controllers;
-
+import application.*;
+import javafx.application.Application;
+import javafx.stage.Stage;
 /**
  * @author Daniel Quinlan
  * @studentNumber 01133940
@@ -8,15 +10,16 @@ package controllers;
  * 
  * @param <T>
  */
+
 public class Driver {
-	private CLI cli = new CLI();
-	
+
 	public Driver() {
+		CLI cli = new CLI();
 		cli.console(); //for Debug
 	}
-
 	public static void main(String[] args) {
 		Driver app = new Driver();
+		//Application.launch(GUI.class, args);
 	}
-
+	
 }

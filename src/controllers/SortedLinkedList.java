@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
@@ -58,6 +59,7 @@ public class SortedLinkedList<T extends Comparable<T>> {
 	 */
 	public void push(T data)
 	{
+		
 		//If list is empty create new list and insert Node as head
 		if(length == 0)
 		{
@@ -104,8 +106,12 @@ public class SortedLinkedList<T extends Comparable<T>> {
 		{
 			if(del.getPrev() == null)
 			{
-				del.getNext().setPrev(null);
-				head = del.getNext();
+				if(del.getNext()!=null) {
+					del.getNext().setPrev(null);
+					head = del.getNext();
+				}
+				else
+					head=null;
 			} else
 			{
 				if(del.getNext() == null)
@@ -119,8 +125,8 @@ public class SortedLinkedList<T extends Comparable<T>> {
 				}
 			}
 			length --;
-			}
 		}
+	}
 	/**
 	 * Clears Nodes from list
 	 * 
@@ -133,7 +139,7 @@ public class SortedLinkedList<T extends Comparable<T>> {
 	}
 	
 	/**
-	 * Search Node's to find matching data input
+	 * Search Nodes to find matching data input
 	 * 
 	 * @param data
 	 * @return 
@@ -142,14 +148,15 @@ public class SortedLinkedList<T extends Comparable<T>> {
 	{
 		//Start a list head
 		Node current = head;
-		
 		//while list is not finished compare input data to Node's data 
 		while (current != null)
 		{
+			System.out.println("1");
 			//If matching node is found return Node
-			if(c.compare(current.data, data) < 0)
+			if(c.compare(current.data, data) == 0) {
+				System.out.println("2");
 				return current;
-			
+			}
 			current = current.getNext();
 		}
 		return null;
@@ -179,9 +186,9 @@ public class SortedLinkedList<T extends Comparable<T>> {
 	 * 
 	 * @return first node in list
 	 */
-	public T getListHead()
+	public Node getListHead()
 	{
-		return head.getData();
+		return head;
 	}
 	
 	/**
@@ -189,9 +196,9 @@ public class SortedLinkedList<T extends Comparable<T>> {
 	 * 
 	 * @return last node in list
 	 */
-	public T getListTail()
+	public Node getListTail()
 	{
-		return tail.getData();
+		return tail;
 	}
 	
 	/**
@@ -329,7 +336,7 @@ public class SortedLinkedList<T extends Comparable<T>> {
 		{
 			//If matching node is found print Node's data .toString()
 			if(c.compare(current.data, data) == 0) {
-				System.out.print(current.data.toString());
+				System.out.println(current.data.toString());
 			}
 			
 			current = current.getNext();
@@ -368,5 +375,14 @@ public class SortedLinkedList<T extends Comparable<T>> {
 				current = current.next;
 			}
 		}
+	}
+	public ArrayList<T> getAll() {
+		ArrayList<T> array = new ArrayList<T>();
+		SortedLinkedList<T>.Node temp =(SortedLinkedList<T>.Node) this.getListHead();
+		for(int i=0;i<this.size();i++) {
+			array.add(temp.getData());
+			temp=temp.getNext();
+		}
+		return array;
 	}
 }

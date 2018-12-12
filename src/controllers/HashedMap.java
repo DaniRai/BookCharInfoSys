@@ -1,4 +1,4 @@
-//----------Packages & Imports----------//
+ //----------Packages & Imports----------//
 package controllers;
 
 
@@ -75,7 +75,8 @@ public class HashedMap<K,V> {
 			Pair<K,V> cur = map[hash];
 			
 			while(cur != null) { //reached end of array
-				if(cur.tail.equals(newKey)) {
+				Pair<K,V> curTail=cur.tail;
+				if(curTail!=null && curTail.equals(newKey)) {
 					if(prev==null) { //insert at head of array
 						newPair.tail=cur.tail;
 						map[hash]=newPair;

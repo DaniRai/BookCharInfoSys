@@ -15,12 +15,19 @@ import java.util.Scanner;
  */
 public class CLI {
 	private Scanner input = new Scanner(System.in);
-	private SortedLinkedList<Book> books;
-	private HashedMap<Book, Character> map;
+	private SortedLinkedList<Book> books=new SortedLinkedList<Book>();
+	private HashedMap<Book, Character> map=new HashedMap<Book,Character>();
 	
 //----------Main Menu----------//
-	
+	public CLI() {
+		Book book = new Book("HarryPotter", "Rowling", "Wizards", "Fantasy", "HP Publisher", "NoCover", 1999, 300);
+		Character character = new Character("HarryPotter", 20, 'M', "No one");
+		books.push(book);
+		
+		map.push(book, character);	
+	}
 	private int mainMenu(){
+		
 			System.out.println("1. Admin Menu");
 			System.out.println("2. End User Menu");
 			int option = input.nextInt();
@@ -28,6 +35,9 @@ public class CLI {
 	}
 
 	public void console(){
+		//books= new SortedLinkedList<Book>();
+		//map= new HashedMap<Book, Character>();
+		
 		int option = mainMenu();
         while (option != 0)
         {
@@ -55,6 +65,7 @@ public class CLI {
 //----------Admin Menu----------//
 	
 	private int adminMenu() {
+			
 			System.out.println("1. Add new Book & Character");
 			System.out.println("2. Remove Book & Character");
 			System.out.println("3. Update Book Details");
@@ -102,11 +113,24 @@ public class CLI {
 	}
 		
 //----------Admin Menu Functions----------//
-	
+	public Book getBookByTitle() {
+		System.out.println("Title of book: ");
+		input.nextLine();
+		String title = input.nextLine();
+		
+		SortedLinkedList<Book>.Node node = books.find(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator); 
+		
+		if(node == null)
+			return null;
+		else
+			return node.getData();
+	}
 	/**
 	 * Method to add book to database
 	 */
 	public void addBook() {
+		
+		input.nextLine();
 		System.out.println("Title of book to add: ");
 		String title = input.nextLine();
 		System.out.println("Author: ");
@@ -124,20 +148,21 @@ public class CLI {
 		System.out.println("Number of Pages: ");
 		int pages = input.nextInt();
 		
+		input.nextLine();
 		System.out.println("Protagonists name: ");
 		String name = input.nextLine();
 		System.out.println("Age: ");
 		int age = input.nextInt();
+		input.nextLine();
 		System.out.println("Gender: ");
 		String gender = input.nextLine();
 		System.out.println("Character description: ");
 		String desc = input.nextLine();
-		
 		Book book = new Book(title, author, plot, genre, publisher, cover, year, pages);
 		Character character = new Character(name, age, gender.charAt(0), desc);
 		
 		books.push(book);
-				
+		
 		map.push(book, character);	
 		
 		books.delDupe();
@@ -147,14 +172,14 @@ public class CLI {
 	 * Method to remove book from database
 	 */
 	public void removeBook() {
-		System.out.println("Title of book to remove: ");
-		String title = input.nextLine();
-		
-		Book toDelete = books.find(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator).getData();
-		
-		map.erase(toDelete);
-		
-		books.remove(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator);		
+		Book book = getBookByTitle();
+		if(book!=null) {
+			map.erase(book);
+			books.remove(new Book(book.getTitle(), "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator);		
+		}
+		else {
+			System.out.println("Not found");
+		}
 	}
 	
 	/**
@@ -232,76 +257,80 @@ public class CLI {
 	 * Method to update book within database
 	 */
 	public void updateBook(int option) {
-		System.out.println("Title of book to update: ");;
-		String title = input.nextLine();
-		
-		Book book = books.find(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator).getData();
-		book.toString();
-		
-		if(option == 1) {
-			System.out.println("New Title for Book: ");
-			String newTitle = input.nextLine();
-			Character character = map.get(book);
-			map.erase(book);
-			book.setTitle(newTitle);
-			map.push(book, character);			
+		Book toFind= getBookByTitle();
+		if(toFind!=null) {
+			SortedLinkedList<Book>.Node node = books.find(toFind, Book.TitleComparator);
+			if(node==null)
+				System.out.println("0");
+			Book book = node.getData();
+			book.toString();
+			if(option == 1) {
+				System.out.println("New Title for Book: ");
+				String newTitle = input.nextLine();
+				Character character = map.get(book);
+				map.erase(book);
+				book.setTitle(newTitle);
+				map.push(book, character);			
+			}
+			else if (option == 2) {
+				System.out.println("New Author for Book: ");
+				String newAuthor = input.nextLine();
+				Character character = map.get(book);
+				map.erase(book);
+				book.setAuthor(newAuthor);
+				map.push(book, character);			
+			}
+			else if(option ==3) {
+				System.out.println("Updated Genre for Book: ");
+				String newGenre = input.nextLine();
+				Character character = map.get(book);
+				map.erase(book);
+				book.setGenre(newGenre);
+				map.push(book, character);			
+			}
+			else if(option == 4) {
+				System.out.println("New Publisher for Book: ");
+				String newPublisher = input.nextLine();
+				Character character = map.get(book);
+				map.erase(book);
+				book.setPublisher(newPublisher);
+				map.push(book, character);			
+			}
+			else if(option == 5) {
+				System.out.println("Updated Year of Publishing for Book: ");
+				int newYear = input.nextInt();
+				Character character = map.get(book);
+				map.erase(book);
+				book.setPublished(newYear);
+				map.push(book, character);			
+			}
+			else if(option == 6) {
+				System.out.println("Updated Page Count for Book: ");
+				int newPages = input.nextInt();
+				Character character = map.get(book);
+				map.erase(book);
+				book.setPages(newPages);
+				map.push(book, character);			
+			}
+			else if(option == 7) {
+				System.out.println("Updated Plot for Book: ");
+				String newPlot = input.nextLine();
+				Character character = map.get(book);
+				map.erase(book);
+				book.setPlot(newPlot);
+				map.push(book, character);			
+			}
+			else if(option == 8) {
+				System.out.println("New Cover Url for Book: ");
+				String newUrl = input.nextLine();
+				Character character = map.get(book);
+				map.erase(book);
+				book.setCover(newUrl);
+				map.push(book, character);			
+			}
+		}else {
+			System.out.println("Not found");
 		}
-		else if (option == 2) {
-			System.out.println("New Author for Book: ");
-			String newAuthor = input.nextLine();
-			Character character = map.get(book);
-			map.erase(book);
-			book.setAuthor(newAuthor);
-			map.push(book, character);			
-		}
-		else if(option ==3) {
-			System.out.println("Updated Genre for Book: ");
-			String newGenre = input.nextLine();
-			Character character = map.get(book);
-			map.erase(book);
-			book.setGenre(newGenre);
-			map.push(book, character);			
-		}
-		else if(option == 4) {
-			System.out.println("New Publisher for Book: ");
-			String newPublisher = input.nextLine();
-			Character character = map.get(book);
-			map.erase(book);
-			book.setPublisher(newPublisher);
-			map.push(book, character);			
-		}
-		else if(option == 5) {
-			System.out.println("Updated Year of Publishing for Book: ");
-			int newYear = input.nextInt();
-			Character character = map.get(book);
-			map.erase(book);
-			book.setPublished(newYear);
-			map.push(book, character);			
-		}
-		else if(option == 6) {
-			System.out.println("Updated Page Count for Book: ");
-			int newPages = input.nextInt();
-			Character character = map.get(book);
-			map.erase(book);
-			book.setPages(newPages);
-			map.push(book, character);			
-		}
-		else if(option == 7) {
-			System.out.println("Updated Plot for Book: ");
-			String newPlot = input.nextLine();
-			Character character = map.get(book);
-			map.erase(book);
-			book.setPlot(newPlot);
-			map.push(book, character);			
-		}
-		else if(option == 8) {
-			System.out.println("New Cover Url for Book: ");
-			String newUrl = input.nextLine();
-			Character character = map.get(book);
-			map.erase(book);
-			book.setCover(newUrl);
-			map.push(book, character);			
-		}				
 	}
 
 //----------Update Character Menu----------//
@@ -353,35 +382,37 @@ public class CLI {
 	 * Method to update Character within database
 	 */
 	public void updateCharacter(int option) {
-		System.out.println("Title of book containing to update: ");;
-		String title = input.nextLine();
-		
-		Book book = books.find(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator).getData();
-		Character character = map.get(book);
-		
-		if(option == 1) {
-			System.out.println("New Name for Character: ");
-			String newTitle = input.nextLine();
-			character.setName(newTitle);
-			map.push(book, character);			
+		Book book = getBookByTitle();
+		if(book != null) {
+			Character character = map.get(book);
+
+			if(option == 1) {
+				System.out.println("New Name for Character: ");
+				String newName = input.nextLine();
+				character.setName(newName);
+				map.push(book, character);			
+			}
+			else if (option == 2) {
+				System.out.println("Updated Age for Character: ");
+				int newAge = input.nextInt();
+				character.setAge(newAge);
+				map.push(book, character);			
+			}
+			else if(option ==3) {
+				System.out.println("Updated Gender for Character: ");
+				String newGender = input.nextLine();
+				character.setGender(newGender.charAt(0));
+				map.push(book, character);			
+			}
+			else if(option == 4) {
+				System.out.println("Updated Description for Character: ");
+				String newDesc = input.nextLine();
+				character.setDesc(newDesc);
+				map.push(book, character);			
+			}
 		}
-		else if (option == 2) {
-			System.out.println("Updated Age for Character: ");
-			int newAge = input.nextInt();
-			character.setAge(newAge);
-			map.push(book, character);			
-		}
-		else if(option ==3) {
-			System.out.println("Updated Gender for Character: ");
-			String newGender = input.nextLine();
-			character.setGender(newGender.charAt(0));
-			map.push(book, character);			
-		}
-		else if(option == 4) {
-			System.out.println("Updated Description for Character: ");
-			String newDesc = input.nextLine();
-			character.setDesc(newDesc);
-			map.push(book, character);			
+		else {
+			System.out.println("Not found");
 		}
 	}
 	
@@ -391,9 +422,10 @@ public class CLI {
 		System.out.println("1. List all Titles");
 		System.out.println("2. View Title");
 		System.out.println("3. Search by Author");
-		System.out.println("4. Search by Year Published");
-		System.out.println("5. Search by Publisher");
-		System.out.println("6. Return to Main Menu");
+		System.out.println("4. Search by Genre");
+		System.out.println("5. Search by Year Published");
+		System.out.println("6. Search by Publisher");
+		System.out.println("7. Return to Main Menu");
 		int option = input.nextInt();
 		return option;
 	}
@@ -415,7 +447,9 @@ public class CLI {
           			break;
 			case 5:    searchPublished();
           			break;
-			case 6:	 console();
+			case 6:	   searchPublisher();
+					break;
+			case 7:	 console();
           			break;
 			default:    System.out.println("Invalid option entered: " + option);
                       break;
@@ -437,13 +471,11 @@ public class CLI {
 	 * Method to Search for book by Title and print book details
 	 */
 	public void viewTitle() {
-		System.out.println("Title of book to view: ");
-		String title = input.nextLine();
-		
-		Book book = books.find(new Book(title, "a", "a", "a", "a", "a", 1, 1), Book.TitleComparator).getData();
-		
-		book.toString();
-		map.get(book).toString();
+		Book book = getBookByTitle();
+		if(book != null) {
+			System.out.println(book.toString());
+			System.out.println(map.get(book).toString());
+		}
 	}
 	
 	/**
@@ -451,11 +483,10 @@ public class CLI {
 	 */
 	public void searchAuthor() {
 		System.out.println("Authors name: ");
+		input.nextLine();
 		String author = input.nextLine();
 		
 		books.listBy(new Book("a", author, "a", "a", "a", "a", 1, 1), Book.AuthorComparator);
-		
-		viewTitle();
 	}
 	
 	/**
@@ -463,11 +494,10 @@ public class CLI {
 	 */
 	public void searchGenre() {
 		System.out.println("Genre: ");
+		input.nextLine();
 		String genre = input.nextLine();
 		
 		books.listBy(new Book("a", "a", "a", genre, "a", "a", 1, 1), Book.GenreComparator);	
-		
-		viewTitle();
 	}
 	
 	/**
@@ -475,11 +505,16 @@ public class CLI {
 	 */
 	public void searchPublished() {
 		System.out.println("Year: ");
+		input.nextLine();
 		int published = input.nextInt();
 		
 		books.listBy(new Book("a", "a", "a", "a", "a", "a", published, 1), Book.PublishedComparator);
-		
-		viewTitle();
 	}
+	public void searchPublisher() {
+		System.out.println("Publisher: ");
+		input.nextLine();
+		String publisher = input.nextLine();
 		
+		books.listBy(new Book("a", "a", "a", "a", publisher, "a", 1, 1), Book.PublisherComparator);
+	}	
 }

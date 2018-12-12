@@ -29,9 +29,9 @@ class SortedLinkedListTest {
 	void setUp() throws Exception {
 		book = new SortedLinkedList<Book>();
 		
-		book.push(new Book("Ender's Game", "Orson Scott Card", "Plot here", "Sci-Fi", "Orbit", null, 1985, 326));
-		book.push(new Book("The Hitchhikers Guide to the Galaxy", "Douglas Adams", "Plot Here", "Comedy", "Pan Books", null, 1979, 180));
-		book.push(new Book("Jonathan Strange & Mr Norrell", "Susanna Clarke", "Plot here", "Fantasy", "Bloomsbury", null, 2004, 261));
+		book.push(new Book(null, null, null, null, null, null, 0, 0));
+		book.push(new Book(null, null, null, null, null, null, 0, 0));
+		book.push(new Book(null, null, null, null, null, null, 0, 0));
 	}
 
 	/**
@@ -48,7 +48,7 @@ class SortedLinkedListTest {
 	@Test
 	void testPush() {
 		int size = book.size();
-		book.push(new Book("Ender's Game", "Orson Scott Card", "Plot here", "Sci-Fi", "Orbit", null, 1985, 326));
+		book.push(new Book(null, null, null, null, null, null, size, size));
 		assertEquals(book.size(), size+1);
 	}
 
@@ -58,9 +58,7 @@ class SortedLinkedListTest {
 	@Test
 	void testRemove() {
 		int size = book.size();
-		book.remove(new Book("Ender's Game", "Orson Scott Card", "Plot here", "Sci-Fi", "Orbit", null, 1985, 326), Book.TitleComparator);
-		assertEquals(book.size(), size);
-		book.remove(new Book("The Hitchhikers Guide to the Galaxy", "Douglas Adams", "Plot Here", "Comedy", "Pan Books", null, 1979, 180), Book.TitleComparator);
+		book.remove(new Book(null, null, null, null, null, null, size, size), Book.TitleComparator);
 		assertEquals(book.size(), size-1);
 	}
 
@@ -79,8 +77,8 @@ class SortedLinkedListTest {
 	 */
 	@Test
 	void testFind() {
-		String tdata = "Ender's Game";
-		String fdata = book.find(new Book("Ender's Game", "a", "a", "a", "a", null, 0, 0), Book.TitleComparator).getData().getTitle();
+		String tdata = "";
+		String fdata = book.find(new Book(tdata, "a", "a", "a", "a", "a", 0, 0), Book.TitleComparator).getData().getTitle();
 		assertEquals(tdata, fdata);
 	}
 
@@ -97,8 +95,8 @@ class SortedLinkedListTest {
 	 */
 	@Test
 	void testGetListHead() {
-		String tdata = book.head.getData().getTitle();
-		String fdata = book.getListHead().getTitle();
+		String tdata = "";
+		String fdata = book.getListHead().getData().getTitle();
 		assertEquals(tdata, fdata);
 	}
 
@@ -107,8 +105,8 @@ class SortedLinkedListTest {
 	 */
 	@Test
 	void testGetListTail() {
-		String tdata = book.tail.getData().getTitle();
-		String fdata = book.getListTail().getTitle();
+		String tdata = "";
+		String fdata = book.getListTail().getData().getTitle();
 		assertEquals(tdata, fdata);
 	}
 	
@@ -117,18 +115,18 @@ class SortedLinkedListTest {
 	 */
 	@Test
 	void testSort() {
-		String tTitle = "Ender's Game";
-		//String tAuthor = "Douglas Adams";
-		//String tGenre = "Comedy";
-		//int tYear = 1979;
+		String tTitle = "";
+		String tAuthor = "";
+		String tGenre = "";
+		int tYear = 0;
 		book.sort(book.head, Book.TitleComparator);
-		assertEquals(tTitle, book.getListHead().getTitle());
-		//book.sort(book.head, Book.AuthorComparator);
-		//assertEquals(tAuthor, book.getListHead().getAuthor());
-		//book.sort(book.head, Book.GenreComparator);
-		//assertEquals(tGenre, book.getListHead().getGenre());
-		//book.sort(book.head, Book.PublishedComparator);
-		//assertEquals(tYear, book.getListHead().getPublished());
+		assertEquals(tTitle, book.getListHead().getData().getTitle());
+		book.sort(book.head, Book.AuthorComparator);
+		assertEquals(tAuthor, book.getListHead().getData().getAuthor());
+		book.sort(book.head, Book.GenreComparator);
+		assertEquals(tGenre, book.getListHead().getData().getGenre());
+		book.sort(book.head, Book.PublishedComparator);
+		assertEquals(tYear, book.getListHead().getData().getPublished());
 	}
 	
 	/**
@@ -136,7 +134,7 @@ class SortedLinkedListTest {
 	 */
 	@Test
 	void testDelDupe() {
-		book.push(new Book("Ender's Game", "Orson Scott Card", "Plot here", "Sci-Fi", "Orbit", null, 1985, 326));
+		book.push(new Book(null, null, null, null, null, null, 0, 0));
 		assertTrue(book.size()==4);
 		book.sort(book.head, Book.TitleComparator);
 		book.delDupe();

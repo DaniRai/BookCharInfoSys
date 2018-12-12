@@ -20,8 +20,7 @@ public class Book implements Comparable<Book> {
 	private int published;
 	private int pages;
 
-//----------Constructor---------//
-	
+//----------Constructors---------//
 	public Book(String title, String author, String plot, String genre, String publisher, String cover, int published, int pages) {
 		this.title = title;
 		this.author = author;
@@ -171,13 +170,17 @@ public class Book implements Comparable<Book> {
 			return b1.getAuthor().compareTo(b2.getAuthor());
 		}
 	};
-	
+	public static final Comparator<Book> PublisherComparator = new Comparator<Book>() {
+		public int compare(Book b1, Book b2) {
+			return b1.getPublisher().compareTo(b2.getPublisher());
+		}
+	};
 	public static final Comparator<Book> PublishedComparator = new Comparator<Book>() {
 		public int compare(Book b1, Book b2) {
 			return Integer.compare(b1.getPublished(), b2.getPublished());
 		}
 	};
- 
+
 	
 	public int compareTo(Book o) {
 		return 0;
@@ -197,7 +200,7 @@ public class Book implements Comparable<Book> {
 	 */
 	@Override
 	public int hashCode() {
-		//Create hashcodes from each object field
+		//Create hashcodes from each object field	
 		int c1 = this.author.hashCode();
 		int c2 = this.cover.hashCode();
 		int c3 = this.genre.hashCode();
@@ -213,6 +216,10 @@ public class Book implements Comparable<Book> {
 		hash = 13 * hash + c6;
 		
 		return hash;		
+	}
+	public int hashCode(String str) {
+		return 0;
+		//to do
 	}
 	
 	/**
